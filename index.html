@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Canvas Game!</title>
+</head>
+<body>
+
+
+
+
+
+	<script type="text/javascript">
+		// Create the canvas tag with JS
+		var canvas = document.createElement('canvas');
+		// Create a context for JS to play with (methods, properties etc.)
+		var context = canvas.getContext('2d');
+		// Give the canvas some height and width
+		canvas.width = 512;
+		canvas.height = 480;
+
+		// Add the canvas tag to the DOM
+		document.body.appendChild(canvas);
+
+		var backgroundImage = new Image();
+		backgroundImage.src = "canvas-game-assets/background.png";
+
+		var speedModifier = .5;
+
+		// Make a var for our hero. He is an image!
+		var hero = new Image();
+		hero.src = "canvas-game-assets/hero.png";
+		var heroLocation = {
+			x: 100,
+			y: 100,
+			bombPlace: false,
+			bombTimer: false
+		}
+
+		// Make a var for our monster. He is an image!
+		var monster = new Image();
+		monster.src = "canvas-game-assets/monster.png";
+		var monsterLocation = {
+			x: 400,
+			y: 400,
+			newX: 400,
+			newY: 400
+		}
+
+		var bomb = new Image();
+		bomb.src = "canvas-game-assets/bomb.png";
+		var bombLocation = {
+			x: "Herox",
+			y: "Heroy"
+		}
+
+		// An array to hold all the keys that are currently pressed down.
+		var keysDown = [];
+
+		addEventListener('keyup', function(event){
+			delete keysDown[event.keyCode];
+		});
+
+
+		// We need a way to tell if the user has pushed an arrow key!
+		addEventListener('keydown', function(event){
+			// if keyDown[39] is true then the user pushed the right arrow
+			// if keyDown[40] is true then the user pushed the down arrow
+			// if keyDown[37] is true then the user pushed the left arrow
+			// if keyDown[38] is true then the user pushed the up arrow
+			keysDown[event.keyCode] = true;
+			// console.log(keysDown);
+
+
+			//OLD CODE
+			// // console.log(event.key);
+			// if(event.key === "ArrowDown") {
+			// 	console.log("User pressed down arrow");
+			// 	heroLocation.y += 10;
+			// }
+			// if(event.key === "ArrowUp") {
+			// 	console.log("User pressed up arrow");
+			// 	heroLocation.y -= 10;
+			// }
+			// if(event.key === "ArrowLeft") {
+			// 	console.log("User pressed Left arrow");
+			// 	heroLocation.x -= 10;
+			// }
+			// if(event.key === "ArrowRight") {
+			// 	console.log("User pressed Right arrow");
+			// 	heroLocation.x += 10;
+			// }
+		});
+
+		// This is where we will update the hero based on what's true in keysDown.
+		function update() {
+			if(39 in keysDown){
+				if(heroLocation.x <= 450) {
+					heroLocation.x += (10 * speedModifier);
+				}
+			}
+			if(37 in keysDown){
+				if(heroLocation.x >= 26) {
+				heroLocation.x -= (10 * speedModifier);
+				}
+			}
+			if(38 in keysDown){
+				if(heroLocation.y >= 32) {
+				heroLocation.y -= (10 * speedModifier);
+				}
+			}
+			if(40 in keysDown){
+				if(heroLocation.y <= 410) {
+				heroLocation.y += (10 * speedModifier);
+				}
+			}
+			if(32 in keysDown){
+				hero.bombPlace = true;
+				hero.bombTimer = true;
+				//These 2 commands below disaassociate heroLocation and add to bombLocation so that that bomb does not follow.
+				bombLocation.x = heroLocation.x;
+				bombLocation.y = heroLocation.y;
+			}
+
+			if(
+				(heroLocation.x <= monsterLocation.x + 32)
+				&& (heroLocation.y <= monsterLocation.y + 32)
+				&& (monsterLocation.x <= heroLocation.x + 32)
+				&& (monsterLocation.y <= heroLocation.y + 32)
+			){
+				console.log("The monster jumped up and bit you");
+			}
+
+		}
+		function monsterFun() {
+			if((monsterLocation.newX == monsterLocation.x) && (monsterLocation.newY == monsterLocation.y)) {
+				monsterLocation.newX = Math.floor(Math.random() * 440);
+				monsterLocation.newY = Math.floor(Math.random() * 440);
+				// If I want the monster to chase the hero. use below code instead of above code.
+				// monsterLocation.newX = heroLocation.x
+				// monsterLocation.newY = heroLocation.y
+			}
+			else {
+				if(monsterLocation.newX > monsterLocation.x) {
+					monsterLocation.x += Math.ceil(Math.random()* 3);
+				}
+				if(monsterLocation.newX < monsterLocation.x) {
+					monsterLocation.x -= Math.ceil(Math.random()* 3);
+				}
+				if(monsterLocation.newY > monsterLocation.y) {
+					monsterLocation.y += Math.ceil(Math.random()* 3);
+				}
+				if(monsterLocation.newY < monsterLocation.y) {
+					monsterLocation.y -= Math.ceil(Math.random()* 3);
+				}
+			}
+
+		}
+
+		// KEEP DRAW AT THE BOTTOM
+		function draw(){
+			update();
+			monsterFun();
+			// Put our backgroundimage on the context
+			context.drawImage(backgroundImage, 0,0);
+			context.drawImage(hero, heroLocation.x, heroLocation.y);
+			context.drawImage(monster, monsterLocation.x, monsterLocation.y);
+			if (hero.bombPlace == true){
+				context.drawImage(bomb, bombLocation.x, bombLocation.y);
+			}
+			if (hero.bombTimer == true){
+				hero.bombTimer = false;
+				setTimeout(function(){
+					hero.bombPlace = false;
+				}, 3000);
+			}
+			requestAnimationFrame(draw);
+		}
+
+		draw();
+
+
+	</script>
+
+</body>
+</html>
