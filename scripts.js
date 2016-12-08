@@ -55,12 +55,6 @@ var currentScore = 0;
 var playerArray = [];
 var highScore = 0;
 
-// When clicked on, the game starts (timer starts, player can move)
-
-// When clicked on, get Date.now() and save it to current date
-// when clicked on, get Date.now() + 30 * 1000 milliseconds
-// Create a setInterval to run every X and inside, recalculate the timer.
-// When the difference is < 0, stop the game, clear the timer, check highscore.
 
 // Create the canvas tag with JS
 var canvas = document.getElementById('game');
@@ -171,6 +165,15 @@ function update() {
 		//These 2 commands below disaassociate heroLocation and add to bombLocation so that that bomb does not follow.
 		bombLocation.x = heroLocation.x;
 		bombLocation.y = heroLocation.y;
+	}
+	if(39 in keysDown){
+		hero.src = "canvas-game-assets/Ranger-Right.gif";
+	}
+	else if(37 in keysDown){
+		hero.src = "canvas-game-assets/Ranger-Left.gif";
+	}
+	else {
+		hero.src = "canvas-game-assets/Ranger-Front.gif";
 	}
 
 	if(
@@ -330,9 +333,9 @@ function draw(){
 		bombLocation.y = 900;
 		hero.explosion = false;
 		newMonsterLocation.spawn = true;
-		setTimeout(function(){
-			hero.explosion = false;
-		}, 5000);
+		// setTimeout(function(){
+		// 	hero.explosion = false;
+		// }, 1000);
 	}
 	if (newMonsterLocation.spawn == true){
 		context.drawImage(newMonster, newMonsterLocation.x, newMonsterLocation.y);
