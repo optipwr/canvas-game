@@ -1,0 +1,26 @@
+	#timer {
+		text-align: center;
+		font-family: arial;
+		font-size: 32px;
+	}
+	.better-text {
+		font-family: arial;
+	}
+	.center-image {
+		display: block;
+		margin: auto;
+	}
+	body {
+		text-align: center;
+		background-color: #777;
+	}
+	button {
+		padding: 8px;
+	}
+	input {
+		padding: 5px;
+	}
+	#game {
+		padding: 2px;
+		border: 4px ridge #444;
+	}
