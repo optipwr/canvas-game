@@ -83,11 +83,6 @@ var heroLocation = {
 	bombTimer: false,
 	explosion: false
 }
-var heroLeft = new Image();
-heroLeft.src = "canvas-game-assets/Ranger-Left.gif";
-
-var heroRight = new Image();
-heroRight.src = "canvas-game-assets/Ranger-Right.gif";
 
 // Make a var for our monster. He is an image!
 var monster = new Image();
@@ -129,10 +124,6 @@ addEventListener('keyup', function(event){
 
 // We need a way to tell if the user has pushed an arrow key!
 addEventListener('keydown', function(event){
-	// if keyDown[39] is true then the user pushed the right arrow
-	// if keyDown[40] is true then the user pushed the down arrow
-	// if keyDown[37] is true then the user pushed the left arrow
-	// if keyDown[38] is true then the user pushed the up arrow
 	keysDown[event.keyCode] = true;
 
 });
@@ -302,21 +293,9 @@ function draw(){
 		newMonsterFun();
 	}
 	
-	
-	// Put our backgroundimage on the context
 	context.drawImage(backgroundImage, 0,0);
 	context.drawImage(hero, heroLocation.x, heroLocation.y);
 	context.drawImage(monster, monsterLocation.x, monsterLocation.y);
-	// if (39 in keysDown){
-	// 	context.drawImage(heroRight, heroLocation.x, heroLocation.y);
-	// }
-	// else if(37 in KeysDown){
-	// 	context.drawImage(heroLeft, heroLocation.x, heroLocation.y);
-	// }
-	// else{
-	// 	context.drawImage(hero, heroLocation.x, heroLocation.y);
-	// }
-
 
 	if (hero.bombPlace == true){
 		context.drawImage(bomb, bombLocation.x, bombLocation.y);
@@ -326,6 +305,7 @@ function draw(){
 		setTimeout(function(){
 			hero.bombPlace = false;
 		}, 6000);
+		
 	}
 	if (hero.explosion == true){
 		context.drawImage(explosion, bombLocation.x, bombLocation.y);
@@ -340,14 +320,6 @@ function draw(){
 	if (newMonsterLocation.spawn == true){
 		context.drawImage(newMonster, newMonsterLocation.x, newMonsterLocation.y);
 	}
-
-	// if (hero.explosion == true){
-	// 	newMonsterLocation.spawn = true;
-	// }
-	// if (newMonsterLocation.spawn == true) {
-	// 	// context.drawImage(newMonster, newMonsterLocation.x, newMonsterLocation.y);
-	// 	console.log("Spawned!");
-	// }
 	requestAnimationFrame(draw);
 }
 
